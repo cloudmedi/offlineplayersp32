@@ -6,7 +6,7 @@ import './player.css';
 import axios from 'axios';
 
 const AudioPlayer = (props) => {
-  console.log()
+ 
 
   const [audioIndex, setAudioIndex] = useState(0); // Şu an çalınan şarkının indeksi
   const [playing, setPlaying] = useState(false); // Çalma durumu
@@ -54,6 +54,7 @@ async function getCampaigns() {
 }
 
 function shufflePlaylist() {
+
     let shuffledArray = []; // Yeni bir dizi oluştur
     if (Object.values(props?.data?.selectedPlaylist).length > 0 && props?.data?.selectedPlaylist.songs[0].song) {
 

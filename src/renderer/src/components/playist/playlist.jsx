@@ -10,8 +10,24 @@ function Playlist(props) {
 
     const [selectedPlaylist, setSelectedPlaylist] = useState([]);
     const [click,setClick]=useState(0)
-const user=props?.data?.user?.user
- console.log(props)
+
+    const [time, setTime] = useState(new Date());
+
+    useEffect(() => {
+      const timer = setInterval(() => {
+        setTime(new Date());
+      }, 1000);
+  
+      return () => {
+        clearInterval(timer);
+      };
+    }, []);
+    const user=props?.data?.user?.user
+   
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+    const seconds = time.getSeconds();
+
     const handlePlaylistClick = (playlist) => {
         setSelectedPlaylist(playlist);
         setClick(prevClick => prevClick + 1);
@@ -31,11 +47,35 @@ const user=props?.data?.user?.user
     }
    
     
+
     
+    useEffect(() => {
+      
+            // Kullanıcı yöneticiyse ve manager_id 951 ise
+            if (props?.user?.userinfo?.manager_id !== null && props?.user?.userinfo?.manager_id === 951) {
+
+                const playlists = props.data.allPlaylists; // Tüm çalma listeleri
     
-
-
-
+                const selectedPlaylist = playlists.map(playlist => {
+                    // Saat 8 ile 11 arası ve "Hareketli" çalma listesi ise
+                    if (hours >= 8 && hours < 11 && playlist.playlistName === "Slow") {
+                        setSelectedPlaylist(playlist)
+                    }
+                    // Saat 11 ile 00:00 arası ve "Slow" çalma listesi ise
+                    else if ((hours >= 11 ) && playlist.playlistName === "Hareketli") {
+                        setSelectedPlaylist(playlist)
+                    }
+                    // Diğer durumlarda null döndür
+                    return null;
+                }).filter(playlist => playlist !== null); // null olmayanları filtrele
+    
+              
+            }
+       // Her dakikada bir kontrol etmek için 60000 milisaniye (1 dakika)
+    
+       
+    }, [props?.user?.userinfo,hours]); // props.data.allPlaylists bağımlılığını ekledik
+    
     
 
 

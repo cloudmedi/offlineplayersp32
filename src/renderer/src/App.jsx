@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Home from './components/home/home';
 import Playlist from './components/playist/playlist';
+import axios from 'axios';
 
 function App() {
   const [user, setUser] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
   const [isLoggin, setIsLoggin] = useState(false);
   const [updateMessage, setUpdateMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,8 +31,15 @@ function App() {
   useEffect(() => {
     if (user) {
       setIsLoggin(true);
+      axios.get(`https://app.cloudmedia.com.tr/api/usermaninfo/${user.user.user.id}`).then(res=>{
+      if(res.data){
+        setUserInfo(res.data)
+      }
+      })
     }
   }, [user]);
+
+console.log(userInfo)
 
   useEffect(() => {
     window.electron.ipcRenderer.send("updateMessage");
@@ -57,7 +66,7 @@ function App() {
  
   return (
     <>
-      {isLoggin ? <Playlist data={user} /> : <Home />}
+      {isLoggin ? <Playlist data={user} user={userInfo}  /> : <Home />}
        {updateMessage==="Güncelleme mevcut." && (
         <div className="modal" style={{ display: isModalOpen ? 'block' : 'none' }}>
           <div className="modal-content">
