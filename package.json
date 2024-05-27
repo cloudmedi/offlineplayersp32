@@ -1,6 +1,6 @@
 {
   "name": "cloud-media",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Cloudmedia desktop application",
   "main": "./out/main/index.js",
   "author": "Cloud Media",
@@ -13,11 +13,11 @@
     "build": "electron-vite build",
     "postinstall": "electron-builder install-app-deps",
     "build:unpack": "npm run build && electron-builder --dir",
-    "build:win": "npm run build && electron-builder --win",
+    "build:win": "npm run build && electron-builder --win --ia32",
     "build:mac": "npm run build && electron-builder --mac",
     "build:linux": "npm run build && electron-builder --linux"
   },
-  "repository": "https://github.com/cloudmedi/offlineplayer",
+  "repository": "https://github.com/cloudmedi/offlineplayersp32",
   "publish": {
     "provider": "github",
     "releaseType": "release"
@@ -52,6 +52,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
+
   "build": {
     "mac": {
       "entitlementsInherit": "build/entitlements.mac.plist",
