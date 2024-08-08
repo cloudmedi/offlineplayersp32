@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Home from './components/home/home';
 import Playlist from './components/playist/playlist';
-import axios from 'axios';
 
 function App() {
   const [user, setUser] = useState(null);
-  const [userInfo, setUserInfo] = useState(null);
   const [isLoggin, setIsLoggin] = useState(false);
   const [updateMessage, setUpdateMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,15 +29,8 @@ function App() {
   useEffect(() => {
     if (user) {
       setIsLoggin(true);
-      axios.get(`https://app.cloudmedia.com.tr/api/usermaninfo/${user.user.user.id}`).then(res=>{
-      if(res.data){
-        setUserInfo(res.data)
-      }
-      })
     }
   }, [user]);
-
-console.log(userInfo)
 
   useEffect(() => {
     window.electron.ipcRenderer.send("updateMessage");
@@ -54,28 +45,33 @@ console.log(userInfo)
     });
     return () => {
       window.electron.ipcRenderer.removeAllListeners("update-message-reply");
-     
+
     };
   }, [updateMessage]);
-  
+
 
   const handleUpdate = () => {
     window.electron.ipcRenderer.send('start-update');
     setIsModalOpen(false);
   };
- 
+
   return (
     <>
-      {isLoggin ? <Playlist data={user} user={userInfo}  /> : <Home />}
-       {updateMessage==="Güncelleme mevcut." && (
-        <div className="modal" style={{ display: isModalOpen ? 'block' : 'none' }}>
-          <div className="modal-content">
-            <span className="close" onClick={() => setIsModalOpen(false)}>&times;</span>
-            <p>{updateMessage}</p>
-          { updateMessage==="Güncelleme indiriliyor."?null:<button className='btn' onClick={handleUpdate}>Güncellemeyi Başlat</button>}
+      {isLoggin ? <Playlist data={user} /> : <Home />}
+      {updateMessage === "Güncelleme mevcut." && (
+        <div className="modal1" style={{ display: isModalOpen ? 'block' : 'none' }}>
+          <div className="modal-content1">
+            <div style={{ display: "flex", flexDirection: "row",alignItems:"center",justifyContent:"space-between" }}>
+              <span style={{
+                fontFamily: "Arial", fontSize: "20px", fontWeight: "700", lineHeight: "23px", textAlign: "left",color:"black"
+              }}>{updateMessage}</span>
+              <span className="close" onClick={() => setIsModalOpen(false)}>&times;</span>
+            </div>
+            <p>Müzik uygulamamız için yeni bir güncelleme mevcut. En son özellikleri kullanmak için lütfen uygulamayı güncelleyin.</p>
+            {updateMessage === "Güncelleme indiriliyor." ? null : <button className='btn-mes' onClick={handleUpdate}>Uygulamayı Güncelle</button>}
           </div>
         </div>
-      )} 
+      )}
     </>
   );
 }
