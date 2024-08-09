@@ -38,7 +38,7 @@
 z-index: 9999;
 position: absolute;
 width: 56%;
-left: 436px;
+left: 486px;
 align-items: center;
 display: flex;
 flex-direction: column;
@@ -75,6 +75,7 @@ line-height: 21px;
   justify-content: center;
   flex-direction: column;
   text-align: left;
+  right: 25px;
  
 }
 
